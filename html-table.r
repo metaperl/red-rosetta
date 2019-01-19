@@ -2,8 +2,7 @@
 
 Red []
 
-result: func[][rejoin [
-        simple-tag "table" trs]]
+result: func[][simple-tag "table" trs]
 
 trs: func [][rejoin [
         first-tr
@@ -19,17 +18,16 @@ table-data: func [][999 + (random 9000)]
 rand-td: func [][simple-tag "td" table-data]
 rand-tr: func [i][rejoin [
         (simple-tag "tr"
-            (simple-tag "td" i)
-            rand-td rand-td rand-td
+            rejoin [(simple-tag "td" i) rand-td rand-td rand-td]
         )
     ]]
 first-tr: func[][rejoin [
-        (simple-tag "tr"
+        simple-tag "tr" rejoin [
             (simple-tag "th" "")
             (simple-tag "th" "X")
             (simple-tag "th" "Y")
             (simple-tag "th" "Z")
-        )
+            ]
     ]]
 
 simple-tag: func [tag contents][rejoin
