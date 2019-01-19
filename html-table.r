@@ -37,5 +37,6 @@ first-tr: func[][rejoin [
             ]
     ]]
 
-simple-tag: func [tag contents][rejoin
-    ["<" tag ">" newline contents newline "</" tag ">"]]
+simple-tag: func [tag contents /attr a][rejoin
+    ["<" tag (if attr [rejoin [" " a/1 "=" {"} a/2 {"}]]) ">"
+        newline contents newline "</" tag ">"]]
