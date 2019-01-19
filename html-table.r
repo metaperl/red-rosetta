@@ -1,4 +1,36 @@
-table-data: func [][999 + (random 9000)]
-td: func [][rejoin [ "<td>" table-data "</td>" ]]
+; http://www.rosettacode.org/wiki/Create_an_HTML_table
 
-simple-tag: func [tag contents][rejoin ["<" tag ">" contents "</" tag ">"]]
+Red []
+
+result: func[][rejoin [
+        simple-tag "table" trs]]
+
+trs: func [][rejoin [
+        first-tr
+        rand-tr 1
+        rand-tr 2
+        rand-tr 3
+        rand-tr 4
+        rand-tr 5
+    ]]
+
+
+table-data: func [][999 + (random 9000)]
+rand-td: func [][simple-tag "td" table-data]
+rand-tr: func [i][rejoin [
+        (simple-tag "tr"
+            (simple-tag "td" i)
+            rand-td rand-td rand-td
+        )
+    ]]
+first-tr: func[][rejoin [
+        (simple-tag "tr"
+            (simple-tag "th" "")
+            (simple-tag "th" "X")
+            (simple-tag "th" "Y")
+            (simple-tag "th" "Z")
+        )
+    ]]
+
+simple-tag: func [tag contents][rejoin
+    ["<" tag ">" newline contents newline "</" tag ">"]]
