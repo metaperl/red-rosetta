@@ -30,6 +30,8 @@ help2: %https://stackoverflow.com/questions/54272956/how-to-increment-element-of
 help3: %https://stackoverflow.com/questions/54273057/two-dimensional-dispatch-table-with-templated-response
 help4: %https://stackoverflow.com/questions/54273161/in-red-how-do-i-search-through-a-block-for-a-string-matching-a-pattern/54275072#54275072
 
+games-played: 0
+
 weapons: ["rock" "scissors" "paper"]
 matching-weapon: func [abbrev][
     foreach weapon weapons [
@@ -38,7 +40,7 @@ matching-weapon: func [abbrev][
         ]
     ]
 ]
-player-choices: ["rock" 0 "paper" 0 "scissors" 0]
+player-choices: ["rock" 0 "scissors" 0 "paper" 0 ]
 player-choice-tally: func [choice][player-choices/(choice): player-choices/(choice) + 1]
 
 player-choice: "x"
@@ -60,13 +62,31 @@ report-win: func [player1 player2][rejoin [player1 " " (player-wins? player1 pla
 
 draw: func [player computer][player = computer]
 
+update-stats: func [player-choice][
+    player-choice-tally player-choice
+    games-played: games-played + 1
+]
+
+make-computer-choice: func [][
+    either games-played >= 3 [
+        tmp: random games-played
+        tally: select "rock" player-choices
+        either tmp <= tally [return "rock"][
+            tally: tally + select "scissors" player-choices
+            either tmp <= tally [return "scissors"][
+                return "paper"
+            ]
+        ]
+    ][random/only weapons]
+]
+
 while [not player-choice = "q"][
-    player-choice: ask "(r)ock, (p)aper, (s)cissors or (q)uit? "
+    player-choice: ask "(r)ock, (s)cissors, (p)aper or (q)uit? "
     either (player-choice = "q") [][
         if (valid-choice player-choice) [
             computer-choice: random/only weapons
             player-choice: matching-weapon player-choice
-            player-choice-tally player-choice
+            update-stats player-choice
             print rejoin ["Player choice: " player-choice "tally" player-choices "Computer choice:" computer-choice]
             either draw player-choice computer-choice [print "Draw"][
                 tmp: player-wins? player-choice computer-choice
